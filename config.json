@@ -1,0 +1,10 @@
+{
+  "main": "./contracts/GameItems.sol",
+  "deploy": "./build/contracts/GameItems.json",
+  "framework": "truffle-docker",
+  "compilers": {
+    "truffle": "v5.4.3",
+    "solc": "0.8.0"
+  },
+  "npmClient": "npm"
+}
