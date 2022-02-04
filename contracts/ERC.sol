@@ -7,7 +7,29 @@ import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+/*
+Typical transaction scenarios:
 
+1. The seller calls the sell function to generate an order. You can specify or not specify the buyer's address
+
+2. The buyer calls the buy function to pre order.
+
+3. Both parties discussed and reached an agreement through ECC encrypted communication system
+
+4. The seller calls setallowbuyer to set the address of the designated buyer
+
+5. The seller confirms that the transaction between both parties can be carried out, and calls selllock to lock
+
+6. The buyer confirms that the transaction between both parties can be carried out and calls buylock to lock (before that, both parties can cancel the order through sellercancelorder and buyercancelorder)
+
+7. Make payment in private
+
+8. after receiving the payment, the seller calls ReceiveUSDLock.
+
+9. The seller will sell the goods to the buyer
+
+10. buyers confirm that after receiving the sale, call ReceiveObjectLock and complete the transaction.
+*/
 
 contract ERCContract is Context,Ownable,ReentrancyGuard {
     using SafeMath for uint256;
@@ -18,7 +40,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
     uint256 private MAXAmount=10000000000*10**18;//MAX buy amount < 100y
     mapping(address=>bool) public TransactionBan;//Ban
 
-    mapping(address=>mapping(uint256=>uint256)) public UserTransactionOrders;
+    mapping(address=>mapping(uint256=>uint256)) public UserTransactionOrders;//
     mapping(address=>uint256) public TransactionOrdersLen;
     mapping(uint256=>TransactionOrder) public AllTransactionOrders;
     uint256 public allTransactionOrderIndex;
@@ -29,35 +51,40 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
     uint256 public WhiteListIndex=0;
     event SetWhiteListEvent(address[] users);
     event TransactionOrderBuildEvent(uint256 _identifier,address _seller,string _sellObject,uint256 _stackAmount,address _allowbuyer,uint256 _transactionOrderBiuldTime);
-    struct TransactionOrder {
-        uint256 identifier;
-        string sellObject;
-        uint256 stackAmount;
-        address seller;
-        address allowbuyer;
-        address buyer;
-        uint256 buyerstackAmount;
-        bool sellLock;
-        bool buyLock;
-        bool receiveUSD;
-        bool receiveObject;
-        uint256 transactionOrderBiuldTime;
+    struct TransactionOrder {//User's order data structure
+        uint256 identifier;//Order code
+        string sellObject;//The items sold can be described arbitrarily. If it is a secret transaction, anyone will write irrelevant information
+        uint256 stackAmount;//The token of the goods sold by the seller that needs to be pledged, which is three times the price of the goods sold in USD
+        address seller;//Seller address
+        address allowbuyer;//Specify a buyer
+        address buyer;//Buyer address
+        uint256 buyerstackAmount;//The number of tokens that the buyer needs to pledge will be automatically set to 1 / 3 of the seller's pledge
+        bool sellLock;//Seller lock
+        bool buyLock;//Buyer lock The buyer is locked. You can cancel the order before it becomes true. However, the cancelling party will deduct a certain tax and return it to the pledge, and the other party will return the original amount to the pledge.
+        bool receiveUSD;//After the seller receives the payment cash, change the value to true
+        bool receiveObject;//After the buyer receives the item, change the value to true
+        uint256 transactionOrderBiuldTime;//Order creation time
 
     }
     constructor(address _eusdtAddress) {
-        EUSDTAddress=_eusdtAddress;
-    }  
+        EUSDTAddress=_eusdtAddress;//The token contract address can be usdt or erc20 created by yourself, or eusdt created by yourself
+    } 
+    // Set transaction tax rate_ When txrate is 1, the lowest tax rate is 1 / 10000, i.e. 0.01%. The highest level is 100%.
     function SetTxRate(uint256 _txrate)public onlyOwner returns(bool){
         require(_txrate<10000,"_txrate must <10000");
         taxRate=_txrate;
         return true;
     }
+    //Sellers sell items and create orders
     function Sell(string calldata _sellObject,uint256 _stackAmount,address _allowbuyer) public nonReentrant returns  (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");
+        //Administrators can block a certain address for transactions
         require(!TransactionBan[_msgSender()],"Transaction ban");
         require(_stackAmount>=1000000000000000000&&_stackAmount<MAXAmount,"Buy Amount out of range must be more than 1 less than MAXAmount");
+        //Sellers sell items and create orders. Before that, the user needs to complete the authorization of this transaction contract by eusdt. The recommended authorization value is max (uint256), that is, full authorization
         require(IERC20(EUSDTAddress).balanceOf(_msgSender())>=_stackAmount,"The number of remaining tokens in the seller is insufficient");
         require(IERC20(EUSDTAddress).allowance(_msgSender(),address(this))>=_stackAmount,"Insufficient number of eusdt approvals");//
+        //Payment of pledged eusdt to transaction contract
         IERC20(EUSDTAddress).safeTransferFrom(_msgSender(),address(this),_stackAmount);
         //biuld oder
         TransactionOrder memory oder;
@@ -78,6 +105,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         emit TransactionOrderBuildEvent(oder.identifier,oder.seller,oder.sellObject,oder.stackAmount,oder.allowbuyer,oder.transactionOrderBiuldTime);
         return true;
     }
+    //Set the address of the specified buyer and trader, which can be set directly in sell, or set the value to address (0) in sell to ensure that everyone can buy, and then call this function to set
     function setallowbuyer(uint256 _identifier,address _allowbuyer) public returns  (bool) {
         TransactionOrder memory oder= AllTransactionOrders[_identifier];
         require(oder.stackAmount>0,"cancel oder");//cancel Oder
@@ -88,6 +116,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         return true;
         
     }
+    //The buyer wants to buy the order and pledge his eusdt
     function Buy(uint256 _identifier) public lock returns  (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");
         require(!TransactionBan[_msgSender()],"Transaction ban");
@@ -112,6 +141,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         AllTransactionOrders[_identifier].buyerstackAmount=_buyerStackAmount;
         return true;
     }
+    //Seller lock , confirm transaction
     function SellLock(uint256 _identifier) public lock returns  (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");
         //获得订单
@@ -124,6 +154,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         AllTransactionOrders[_identifier].sellLock=true;
         return true;
     }
+    //Buyer lock, confirm transaction
     function BuyLock(uint256 _identifier) public lock returns (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");
         //获得订单
@@ -135,6 +166,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         AllTransactionOrders[_identifier].buyLock=true;
         return true;
     }
+    //Seller confirms receipt of cash
     function ReceiveUSDLock(uint256 _identifier) public lock returns  (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");
         //获得订单
@@ -146,6 +178,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         AllTransactionOrders[_identifier].receiveUSD=true;
         return true;
     }
+    //Buyer confirms receipt of item
     function ReceiveObjectLock(uint256 _identifier) public lock returns (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");
         //获得订单
@@ -168,6 +201,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         
         return true;
     }
+    // If the seller cancels the transaction order, this function can only be executed before the buyer locks it
     function SellerCancelOrder(uint256 _identifier) public lock returns  (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");
         //获得订单
@@ -189,6 +223,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         AllTransactionOrders[_identifier].buyerstackAmount=0;
         return true;
     }
+    //If the buyer cancels the transaction order, this function can only be executed before the buyer is locked
     function BuyerCancelOrder(uint256 _identifier) public lock returns  (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");
         //获得订单
@@ -211,7 +246,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
     }
 
 
-
+    //Administrator withdraws transaction tax income
     function withdrawTax(address _to) public onlyOwner lock returns (bool) {
         //sell lock
         require(Address.isContract(_msgSender())==false,"sender not hunman");
@@ -220,6 +255,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         allTax=0;
         return true;
     }
+    //Arbitration white list. This function is under discussion
     function setWhiteList(address[] memory users) public onlyOwner returns  (bool) {
         uint len=users.length;
         for(uint i=0;i<len;i++){
