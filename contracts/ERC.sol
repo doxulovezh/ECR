@@ -8,6 +8,13 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 /*
+Conditions to be completed before invoking this Contract:
+
+1. The user account needs to have a certain eusdt (PS: 1000000000000000 = 1.0, because the decimal point of erc-20 token is 18 digits)
+
+2. The user needs to call the approve (spender, amount) of eusdt contract to authorize a certain number of eusdt to ERC contract. 
+Spender fills in the address of ERC contract. The amount suggests the maximum value of uint256
+
 Typical transaction scenarios:
 
 1. The seller calls the sell function to generate an order. You can specify or not specify the buyer's address
@@ -20,7 +27,8 @@ Typical transaction scenarios:
 
 5. The seller confirms that the transaction between both parties can be carried out, and calls selllock to lock
 
-6. The buyer confirms that the transaction between both parties can be carried out and calls buylock to lock (before that, both parties can cancel the order through sellercancelorder and buyercancelorder)
+6. The buyer confirms that the transaction between both parties can be carried out and calls buylock to lock (before that,
+ both parties can cancel the order through sellercancelorder and buyercancelorder)
 
 7. Make payment in private
 
