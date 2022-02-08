@@ -193,7 +193,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         require(AllTransactionOrders[_identifier].stackAmount>0,"cancel oder");//cancel Oder
         require( AllTransactionOrders[_identifier].receiveUSD==true,"Not Received USD");//确认收款
         require( AllTransactionOrders[_identifier].receiveObject==false,"Received Object");//未确认收货
-        require( AllTransactionOrders[_identifier].buyer==_msgSender(),"not seller");//得是买家
+        require( AllTransactionOrders[_identifier].buyer==_msgSender(),"not buyer");//得是买家
         //sell lock
         AllTransactionOrders[_identifier].receiveObject=true;
         //CompleteTransaction

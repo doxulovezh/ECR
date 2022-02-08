@@ -39,7 +39,7 @@ contract IDOStackContract is Context,Ownable,ReentrancyGuard {
         require(IERC20(ERC20Address).allowance(_msgSender(),address(this))>=donateamount,"Insufficient number of token approvals");//
         IERC20(ERC20Address).safeTransferFrom(_msgSender(),address(this), donateamount);
         balances[address(this)]=balances[address(this)].add(donateamount);
-        DonateEvent(_msgSender(),donateamount);
+        emit DonateEvent(_msgSender(),donateamount);
         return true;
     }
 
@@ -97,13 +97,5 @@ contract IDOStackContract is Context,Ownable,ReentrancyGuard {
         IDOActive=val;
         return true;
         
-    }
-
-    //approve lock
-     modifier approvelock(){
-        require(aproveunlocked==1,"LOCKED");
-        aproveunlocked=0;
-        _;
-        aproveunlocked=1;
     }
 }

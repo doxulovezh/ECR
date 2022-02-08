@@ -75,11 +75,4 @@ contract IDOContract is Context,Ownable,ReentrancyGuard {
         }
         return false;
     }
-    //approve lock
-     modifier approvelock(){
-        require(aproveunlocked==1,"LOCKED");
-        aproveunlocked=0;
-        _;
-        aproveunlocked=1;
-    }
 }
