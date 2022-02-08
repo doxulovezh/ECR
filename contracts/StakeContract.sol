@@ -8,15 +8,16 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-//  abstract contract  MyMBT {
-//     function balanceOf(address _addMinter) public view virtual returns (uint256);
-// }
+/*
+算了==你质押代币的数量
+myERC20Addr就是你的代币地址
+
+*/
 
 contract StackContract is Context,SafeControl,Ownable,ReentrancyGuard {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
-    address public myERC20Addr;//MBT address
-    // MyMBT private myerc20=MyMBT(myERC20Addr);
+    address public myERC20Addr;//token address
     uint256 private aproveunlocked=1;//领取锁，防止重放攻击
 
     mapping(address => uint256) public allocPoint;//账户--算力
@@ -46,7 +47,7 @@ contract StackContract is Context,SafeControl,Ownable,ReentrancyGuard {
     /*...
     函数名：computationalPowerOf 
     单个查询 addr地址  算力
-    返回值：可领取MBT的数量
+    返回值：可领取token的数量
     */
     function computationalPowerOf(address addr) public view returns (uint256) {
         return allocPoint[addr];
@@ -54,7 +55,7 @@ contract StackContract is Context,SafeControl,Ownable,ReentrancyGuard {
     /*...
     函数名：computationalPowerOfBatch
     批量查询 addrs 中每个地址  算力
-    返回值：可领取MBT的数量的数组
+    返回值：可领取token的数量的数组
     */
     function computationalPowerOfBatch(address[] memory addrs) public view returns (uint256[] memory) {
         uint len=addrs.length;
@@ -74,7 +75,7 @@ contract StackContract is Context,SafeControl,Ownable,ReentrancyGuard {
 
     /*...
     函数名：reap  
-    MBT领取 函数调用者msg.sender 更具 算力与经历的区块数量 计算收益,领取后msg.sender账户算力 归零
+    token领取 函数调用者msg.sender 更具 算力与经历的区块数量 计算收益,领取后msg.sender账户算力 归零
     */
     function reap() public nonReentrant returns (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");//not hunman
@@ -92,13 +93,13 @@ contract StackContract is Context,SafeControl,Ownable,ReentrancyGuard {
         uint256 tokenReward = allpointTemp.div(10**18).mul(blockReward);//更具 时间*stack 数量
         allocPoint[_msgSender()]=0;//用户算力归零  下次更新算力前不能再收获了
         IERC20(myERC20Addr).safeTransfer(_msgSender(), tokenReward.add(allpointTemp));
-        Repevent(_msgSender(),allpointTemp,tokenReward);
+        emit Repevent(_msgSender(),allpointTemp,tokenReward);
         return true;
     }
     
     /*...
     函数名：reapView  
-    MBT领取预查看 函数调用者msg.sender 更具 算力与经历的区块数量 计算收益
+    token领取预查看 函数调用者msg.sender 更具 算力与经历的区块数量 计算收益
     */
     function reapView(address addr) public view returns (uint256) {
       require(Address.isContract(addr)==false,"not hunman");//not hunman

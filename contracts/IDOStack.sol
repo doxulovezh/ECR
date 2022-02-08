@@ -6,33 +6,35 @@ import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-
 /*
-
+Selling a token at a fixed usdt price is usually implemented in the second stage of private placement. 
+The main function is that the token purchased by the user will not be directly given to the user, 
+but exists in the contract and is linearly unlocked and released to y over time
 */
-
-contract IDOStackContract is Context,Ownable,ReentrancyGuard {
+contract IDOstakeContract is Context,Ownable,ReentrancyGuard {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
     address public ERC20Address;//ANK address
     address public USDTAddress;//USDT address
-    uint256 private aproveunlocked=1;//lock
     uint256 public price;//price
-    uint256 public stackTime;//time
+    uint256 public stakeTime;//Pledge time required to collect all tokens
     uint256 private MAXAmount=10000000*10**18;//MAX buy amount < 1000w
     bool public IDOActive=false;//
     mapping (address => uint) private balances;
     mapping (address => uint) private purchaseDate;
     event IDOBuyEvent(address user,uint amount);
     event DonateEvent(address user,uint amount);
-    constructor(uint256 _price,uint256 _stackTime,address _erc20address,address _usdtAddress) {
+    constructor(uint256 _price,uint256 _stakeTime,address _erc20address,address _usdtAddress) {
         price = _price;
         ERC20Address=_erc20address;
         USDTAddress=_usdtAddress;
-        stackTime=_stackTime;
+        stakeTime=_stakeTime;
     }  
     
-
+    /*
+    Donation function, which is usually called by the official to complete the issuance and destruction of certain tokens,
+    and the interests are transferred to the pledgor
+    */
     function donate(uint256 donateamount) public nonReentrant returns  (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");
         require(donateamount>=1000000000000000000&&donateamount<200000000000000000000000000,"donate Amount out of range");
@@ -63,8 +65,8 @@ contract IDOStackContract is Context,Ownable,ReentrancyGuard {
         require(Address.isContract(_msgSender())==false,"not hunman");
         require(purchaseDate[_msgSender()]<block.timestamp,"purchaseDate must < now time");
         uint256 withdrawAmount=0;
-        if(block.timestamp.sub(purchaseDate[_msgSender()])<stackTime){
-            withdrawAmount=balances[_msgSender()].div(stackTime).mul(block.timestamp.sub(purchaseDate[_msgSender()]));
+        if(block.timestamp.sub(purchaseDate[_msgSender()])<stakeTime){
+            withdrawAmount=balances[_msgSender()].div(stakeTime).mul(block.timestamp.sub(purchaseDate[_msgSender()]));
         }else{
             withdrawAmount=balances[_msgSender()];
         }
@@ -77,22 +79,24 @@ contract IDOStackContract is Context,Ownable,ReentrancyGuard {
         require(Address.isContract(_msgSender())==false,"not hunman");
         require(purchaseDate[_msgSender()]<block.timestamp,"purchaseDate must < now time");
         uint256 withdrawAmount=0;
-        if(block.timestamp.sub(purchaseDate[_msgSender()])<stackTime){
-            withdrawAmount=balances[_msgSender()].div(stackTime).mul(block.timestamp.sub(purchaseDate[_msgSender()]));
+        if(block.timestamp.sub(purchaseDate[_msgSender()])<stakeTime){
+            //If the pledge period is not expired, obtain some pledged tokens according to the percentage of pledge time
+            withdrawAmount=balances[_msgSender()].div(stakeTime).mul(block.timestamp.sub(purchaseDate[_msgSender()]));
         }else{
-            withdrawAmount=balances[_msgSender()];
+            withdrawAmount=balances[_msgSender()];//When the pledge expires, all pledged tokens will be obtained
         }
         return withdrawAmount;
     }
-    
+    //View the total number of address pledges
     function balanceOf(address tokenOwner) public view returns(uint balance){
         return balances[tokenOwner];
     }
+    //View the date when the address purchased the token
     function purchaseDateOf(address tokenOwner) public view returns(uint balance){
         return purchaseDate[tokenOwner];
     }
 
-
+    //start IDOStake
     function setIDOActive(bool val) public onlyOwner returns  (bool) {
         IDOActive=val;
         return true;
