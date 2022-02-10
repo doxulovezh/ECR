@@ -15,15 +15,15 @@
     "absolutePath": "project:/contracts/SafeControl.sol",
     "exportedSymbols": {
       "SafeControl": [
-        6952
+        4695
       ]
     },
-    "id": 6953,
+    "id": 4696,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 6929,
+        "id": 4672,
         "literals": [
           "solidity",
           "^",
@@ -31,7 +31,7 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "33:23:29"
+        "src": "33:23:15"
       },
       {
         "abstract": true,
@@ -39,21 +39,21 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 6952,
+        "id": 4695,
         "linearizedBaseContracts": [
-          6952
+          4695
         ],
         "name": "SafeControl",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 6932,
+            "id": 4675,
             "mutability": "mutable",
             "name": "unlocked",
             "nodeType": "VariableDeclaration",
-            "scope": 6952,
-            "src": "97:26:29",
+            "scope": 4695,
+            "src": "97:26:15",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -61,10 +61,10 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 6930,
+              "id": 4673,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "97:7:29",
+              "src": "97:7:15",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -72,14 +72,14 @@
             },
             "value": {
               "hexValue": "31",
-              "id": 6931,
+              "id": 4674,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "122:1:29",
+              "src": "122:1:15",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_1_by_1",
                 "typeString": "int_const 1"
@@ -90,9 +90,9 @@
           },
           {
             "body": {
-              "id": 6950,
+              "id": 4693,
               "nodeType": "Block",
-              "src": "145:102:29",
+              "src": "145:102:15",
               "statements": [
                 {
                   "expression": {
@@ -102,18 +102,18 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 6937,
+                        "id": 4680,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 6935,
+                          "id": 4678,
                           "name": "unlocked",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 6932,
-                          "src": "164:8:29",
+                          "referencedDeclaration": 4675,
+                          "src": "164:8:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -123,21 +123,21 @@
                         "operator": "==",
                         "rightExpression": {
                           "hexValue": "31",
-                          "id": 6936,
+                          "id": 4679,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "174:1:29",
+                          "src": "174:1:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_1_by_1",
                             "typeString": "int_const 1"
                           },
                           "value": "1"
                         },
-                        "src": "164:11:29",
+                        "src": "164:11:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -145,14 +145,14 @@
                       },
                       {
                         "hexValue": "4c4f434b4544",
-                        "id": 6938,
+                        "id": 4681,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "176:8:29",
+                        "src": "176:8:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_eb4a01a12a4bbfa1bc780c16c5b2b6720cdf4f3c29cabd8c0f76fec3a575096b",
                           "typeString": "literal_string \"LOCKED\""
@@ -171,7 +171,7 @@
                           "typeString": "literal_string \"LOCKED\""
                         }
                       ],
-                      "id": 6934,
+                      "id": 4677,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -179,13 +179,13 @@
                         4294967278
                       ],
                       "referencedDeclaration": 4294967278,
-                      "src": "156:7:29",
+                      "src": "156:7:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 6939,
+                    "id": 4682,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -193,31 +193,31 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "156:29:29",
+                    "src": "156:29:15",
                     "tryCall": false,
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 6940,
+                  "id": 4683,
                   "nodeType": "ExpressionStatement",
-                  "src": "156:29:29"
+                  "src": "156:29:15"
                 },
                 {
                   "expression": {
-                    "id": 6943,
+                    "id": 4686,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 6941,
+                      "id": 4684,
                       "name": "unlocked",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 6932,
-                      "src": "196:8:29",
+                      "referencedDeclaration": 4675,
+                      "src": "196:8:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -227,49 +227,49 @@
                     "operator": "=",
                     "rightHandSide": {
                       "hexValue": "30",
-                      "id": 6942,
+                      "id": 4685,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "205:1:29",
+                      "src": "205:1:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_0_by_1",
                         "typeString": "int_const 0"
                       },
                       "value": "0"
                     },
-                    "src": "196:10:29",
+                    "src": "196:10:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 6944,
+                  "id": 4687,
                   "nodeType": "ExpressionStatement",
-                  "src": "196:10:29"
+                  "src": "196:10:15"
                 },
                 {
-                  "id": 6945,
+                  "id": 4688,
                   "nodeType": "PlaceholderStatement",
-                  "src": "217:1:29"
+                  "src": "217:1:15"
                 },
                 {
                   "expression": {
-                    "id": 6948,
+                    "id": 4691,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 6946,
+                      "id": 4689,
                       "name": "unlocked",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 6932,
-                      "src": "229:8:29",
+                      "referencedDeclaration": 4675,
+                      "src": "229:8:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -279,65 +279,65 @@
                     "operator": "=",
                     "rightHandSide": {
                       "hexValue": "31",
-                      "id": 6947,
+                      "id": 4690,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "238:1:29",
+                      "src": "238:1:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_1_by_1",
                         "typeString": "int_const 1"
                       },
                       "value": "1"
                     },
-                    "src": "229:10:29",
+                    "src": "229:10:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 6949,
+                  "id": 4692,
                   "nodeType": "ExpressionStatement",
-                  "src": "229:10:29"
+                  "src": "229:10:15"
                 }
               ]
             },
-            "id": 6951,
+            "id": 4694,
             "name": "lock",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 6933,
+              "id": 4676,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "143:2:29"
+              "src": "143:2:15"
             },
-            "src": "130:117:29",
+            "src": "130:117:15",
             "virtual": false,
             "visibility": "internal"
           }
         ],
-        "scope": 6953,
-        "src": "60:190:29"
+        "scope": 4696,
+        "src": "60:190:15"
       }
     ],
-    "src": "33:217:29"
+    "src": "33:217:15"
   },
   "legacyAST": {
     "absolutePath": "project:/contracts/SafeControl.sol",
     "exportedSymbols": {
       "SafeControl": [
-        6952
+        4695
       ]
     },
-    "id": 6953,
+    "id": 4696,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 6929,
+        "id": 4672,
         "literals": [
           "solidity",
           "^",
@@ -345,7 +345,7 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "33:23:29"
+        "src": "33:23:15"
       },
       {
         "abstract": true,
@@ -353,21 +353,21 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 6952,
+        "id": 4695,
         "linearizedBaseContracts": [
-          6952
+          4695
         ],
         "name": "SafeControl",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 6932,
+            "id": 4675,
             "mutability": "mutable",
             "name": "unlocked",
             "nodeType": "VariableDeclaration",
-            "scope": 6952,
-            "src": "97:26:29",
+            "scope": 4695,
+            "src": "97:26:15",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -375,10 +375,10 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 6930,
+              "id": 4673,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "97:7:29",
+              "src": "97:7:15",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -386,14 +386,14 @@
             },
             "value": {
               "hexValue": "31",
-              "id": 6931,
+              "id": 4674,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "122:1:29",
+              "src": "122:1:15",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_1_by_1",
                 "typeString": "int_const 1"
@@ -404,9 +404,9 @@
           },
           {
             "body": {
-              "id": 6950,
+              "id": 4693,
               "nodeType": "Block",
-              "src": "145:102:29",
+              "src": "145:102:15",
               "statements": [
                 {
                   "expression": {
@@ -416,18 +416,18 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 6937,
+                        "id": 4680,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 6935,
+                          "id": 4678,
                           "name": "unlocked",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 6932,
-                          "src": "164:8:29",
+                          "referencedDeclaration": 4675,
+                          "src": "164:8:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
@@ -437,21 +437,21 @@
                         "operator": "==",
                         "rightExpression": {
                           "hexValue": "31",
-                          "id": 6936,
+                          "id": 4679,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "174:1:29",
+                          "src": "174:1:15",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_1_by_1",
                             "typeString": "int_const 1"
                           },
                           "value": "1"
                         },
-                        "src": "164:11:29",
+                        "src": "164:11:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -459,14 +459,14 @@
                       },
                       {
                         "hexValue": "4c4f434b4544",
-                        "id": 6938,
+                        "id": 4681,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "176:8:29",
+                        "src": "176:8:15",
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_eb4a01a12a4bbfa1bc780c16c5b2b6720cdf4f3c29cabd8c0f76fec3a575096b",
                           "typeString": "literal_string \"LOCKED\""
@@ -485,7 +485,7 @@
                           "typeString": "literal_string \"LOCKED\""
                         }
                       ],
-                      "id": 6934,
+                      "id": 4677,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -493,13 +493,13 @@
                         4294967278
                       ],
                       "referencedDeclaration": 4294967278,
-                      "src": "156:7:29",
+                      "src": "156:7:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 6939,
+                    "id": 4682,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -507,31 +507,31 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "156:29:29",
+                    "src": "156:29:15",
                     "tryCall": false,
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 6940,
+                  "id": 4683,
                   "nodeType": "ExpressionStatement",
-                  "src": "156:29:29"
+                  "src": "156:29:15"
                 },
                 {
                   "expression": {
-                    "id": 6943,
+                    "id": 4686,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 6941,
+                      "id": 4684,
                       "name": "unlocked",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 6932,
-                      "src": "196:8:29",
+                      "referencedDeclaration": 4675,
+                      "src": "196:8:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -541,49 +541,49 @@
                     "operator": "=",
                     "rightHandSide": {
                       "hexValue": "30",
-                      "id": 6942,
+                      "id": 4685,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "205:1:29",
+                      "src": "205:1:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_0_by_1",
                         "typeString": "int_const 0"
                       },
                       "value": "0"
                     },
-                    "src": "196:10:29",
+                    "src": "196:10:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 6944,
+                  "id": 4687,
                   "nodeType": "ExpressionStatement",
-                  "src": "196:10:29"
+                  "src": "196:10:15"
                 },
                 {
-                  "id": 6945,
+                  "id": 4688,
                   "nodeType": "PlaceholderStatement",
-                  "src": "217:1:29"
+                  "src": "217:1:15"
                 },
                 {
                   "expression": {
-                    "id": 6948,
+                    "id": 4691,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 6946,
+                      "id": 4689,
                       "name": "unlocked",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 6932,
-                      "src": "229:8:29",
+                      "referencedDeclaration": 4675,
+                      "src": "229:8:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -593,51 +593,51 @@
                     "operator": "=",
                     "rightHandSide": {
                       "hexValue": "31",
-                      "id": 6947,
+                      "id": 4690,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "238:1:29",
+                      "src": "238:1:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_1_by_1",
                         "typeString": "int_const 1"
                       },
                       "value": "1"
                     },
-                    "src": "229:10:29",
+                    "src": "229:10:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 6949,
+                  "id": 4692,
                   "nodeType": "ExpressionStatement",
-                  "src": "229:10:29"
+                  "src": "229:10:15"
                 }
               ]
             },
-            "id": 6951,
+            "id": 4694,
             "name": "lock",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 6933,
+              "id": 4676,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "143:2:29"
+              "src": "143:2:15"
             },
-            "src": "130:117:29",
+            "src": "130:117:15",
             "virtual": false,
             "visibility": "internal"
           }
         ],
-        "scope": 6953,
-        "src": "60:190:29"
+        "scope": 4696,
+        "src": "60:190:15"
       }
     ],
-    "src": "33:217:29"
+    "src": "33:217:15"
   },
   "compiler": {
     "name": "solc",
@@ -645,7 +645,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.2",
-  "updatedAt": "2022-02-02T09:23:29.310Z",
+  "updatedAt": "2022-02-09T05:33:14.089Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
