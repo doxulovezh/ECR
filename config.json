@@ -1,10 +1,17 @@
 {
-  "main": "./contracts/GameItems.sol",
-  "deploy": "./build/contracts/GameItems.json",
+  "main": "./contracts/EUSDT.sol",
+  "deploy": "./build/contracts/EUSDT.json",
   "framework": "truffle-docker",
+  "npmClient": "npm",
   "compilers": {
     "truffle": "v5.4.3",
-    "solc": "0.8.0"
+    "solc": "0.8.0",
+    "evmVersion": "istanbul"
   },
-  "npmClient": "npm"
+  "linter": "solhint",
+  "editor": {
+    "fontFamily": "Hack",
+    "fontSize": "13px",
+    "ligatures": false
+  }
 }

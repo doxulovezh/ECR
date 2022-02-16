@@ -3,14 +3,14 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-
-contract EUSDT  is ERC20 {
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+contract EUSDT  is ERC20,ReentrancyGuard {
   uint256 private aproveunlocked=1;
   constructor(uint256 initialSupply) ERC20("Exchange USDT", "EUSDT") {
     _mint(msg.sender, initialSupply);
   }
 
-  function TranferBath(uint256[] calldata amounts,address[] calldata addrs) public approvelock returns  (bool) {
+  function TranferBath(uint256[] calldata amounts,address[] calldata addrs) public nonReentrant returns  (bool) {
     uint len=addrs.length;
     uint len2=amounts.length;
     require(len==len2,"amounts addrs not equal");
@@ -21,10 +21,5 @@ contract EUSDT  is ERC20 {
         return true;
     }
 
-    modifier approvelock(){
-        require(aproveunlocked==1,"LOCKED");
-        aproveunlocked=0;
-        _;
-        aproveunlocked=1;
-    }
+   
 }
