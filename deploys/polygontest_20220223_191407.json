@@ -1,0 +1,245 @@
+{
+  "network": "polygontest",
+  "codeHash": "0x2c46c051673cb196c07f3bd9b6427453963c98e7b40de3fe9dd1e163d938893a",
+  "array": [
+    "0x04933697fc87948112e8a59b8e8048c7776c5423",
+    "0xdc630beb18ba9ffb1ac4bfa2155ca72c5fa66907"
+  ],
+  "json": {
+    "_erc20address": "0x04933697fc87948112e8a59b8e8048c7776c5423",
+    "_usdtAddress": "0xdc630beb18ba9ffb1ac4bfa2155ca72c5fa66907"
+  },
+  "obj": {
+    "_erc20address": {
+      "type": "address",
+      "value": "0x04933697fc87948112e8a59b8e8048c7776c5423"
+    },
+    "_usdtAddress": {
+      "type": "address",
+      "value": "0xdc630beb18ba9ffb1ac4bfa2155ca72c5fa66907"
+    }
+  },
+  "empty": false,
+  "receipt": {
+    "to": null,
+    "from": "0x33524432305955f7a77FbACf12F1D52A3efD5A33",
+    "contractAddress": "0x78eC2a37350951499BB3143773Ba49A7b5165Be9",
+    "transactionIndex": 1,
+    "gasUsed": "1391477",
+    "logsBloom": "0x00000000000000020000000000080000000000000001000000800000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000800001000000000000000100000000000000000000020000000000000000000800000000000000000080000000000000400000000000000000000000004000000000000000000000010000000000400000200000000000000020000000000000000001000000000000000000000000004000000000000008000001000000000000000000000000000000100000000020000000000000000000000000000000000000000000000000000000000000100000",
+    "blockHash": "0x36c132d8eba8c18eb393a51439d67dd1908c79f38690f417658fc884421b5f10",
+    "transactionHash": "0x554d0f0e573e8453417b69b592b40a13198d80b52d23013b239e419dd0029c14",
+    "logs": [
+      {
+        "transactionIndex": 1,
+        "blockNumber": 25217443,
+        "transactionHash": "0x554d0f0e573e8453417b69b592b40a13198d80b52d23013b239e419dd0029c14",
+        "address": "0x78eC2a37350951499BB3143773Ba49A7b5165Be9",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x00000000000000000000000033524432305955f7a77fbacf12f1d52a3efd5a33"
+        ],
+        "data": "0x",
+        "logIndex": 2,
+        "blockHash": "0x36c132d8eba8c18eb393a51439d67dd1908c79f38690f417658fc884421b5f10"
+      },
+      {
+        "transactionIndex": 1,
+        "blockNumber": 25217443,
+        "transactionHash": "0x554d0f0e573e8453417b69b592b40a13198d80b52d23013b239e419dd0029c14",
+        "address": "0x0000000000000000000000000000000000001010",
+        "topics": [
+          "0x4dfe1bbbcf077ddc3e01291eea2d5c70c2b422b415d95645b9adcfd678cb1d63",
+          "0x0000000000000000000000000000000000000000000000000000000000001010",
+          "0x00000000000000000000000033524432305955f7a77fbacf12f1d52a3efd5a33",
+          "0x000000000000000000000000c26880a0af2ea0c7e8130e6ec47af756465452e8"
+        ],
+        "data": "0x000000000000000000000000000000000000000000000000000c5bda36becd000000000000000000000000000000000000000000000000000da3087f53f1f9d5000000000000000000000000000000000000000000000619a8d7b112abeb93610000000000000000000000000000000000000000000000000d96aca51d332cd5000000000000000000000000000000000000000000000619a8e40cece2aa6061",
+        "logIndex": 3,
+        "blockHash": "0x36c132d8eba8c18eb393a51439d67dd1908c79f38690f417658fc884421b5f10"
+      }
+    ],
+    "blockNumber": 25217443,
+    "cumulativeGasUsed": "1417947",
+    "effectiveGasPrice": {
+      "type": "BigNumber",
+      "hex": "0x9502f908"
+    },
+    "status": 1,
+    "type": 2,
+    "byzantium": true
+  },
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_erc20address",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_usdtAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "ExchangeBuyEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "ExchangeSellEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "ERC20Address",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "USDTAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "buy",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "sell",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}

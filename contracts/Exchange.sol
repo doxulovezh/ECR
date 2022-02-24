@@ -32,7 +32,6 @@ contract Exchange is Context,Ownable,ReentrancyGuard {
     using SafeERC20 for IERC20;
     address public ERC20Address;//EUSDT address
     address public USDTAddress;//USDT address
-    bool public ExchangeActive=false;//
 
     event ExchangeBuyEvent(address user,uint amount);
     event ExchangeSellEvent(address user,uint amount);
@@ -43,7 +42,6 @@ contract Exchange is Context,Ownable,ReentrancyGuard {
     
     function buy(uint256 amount) public nonReentrant returns  (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");
-        require(ExchangeActive,"Exchange not Active");
         require(IERC20(ERC20Address).balanceOf(address(this))>=amount,"The number of remaining tokens in the contract is insufficient");
         require(IERC20(USDTAddress).allowance(_msgSender(),address(this))>=amount,"Insufficient number of usdt approvals");//
         IERC20(USDTAddress).safeTransferFrom(_msgSender(),address(this), amount);
@@ -53,7 +51,6 @@ contract Exchange is Context,Ownable,ReentrancyGuard {
     }
     function sell(uint256 amount) public nonReentrant returns  (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");
-        require(ExchangeActive,"Exchange not Active");
         require(IERC20(USDTAddress).balanceOf(address(this))>=amount,"The number of remaining tokens in the contract is insufficient");
         require(IERC20(ERC20Address).allowance(_msgSender(),address(this))>=amount,"Insufficient number of usdt approvals");//
         IERC20(ERC20Address).safeTransferFrom(_msgSender(),address(this), amount);
