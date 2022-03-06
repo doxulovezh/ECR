@@ -47,6 +47,9 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
 
     uint256 private MAXAmount=10000000000*10**18;//MAX buy amount < 100y
     mapping(address=>bool) public TransactionBan;//Ban
+    //Lock Tax
+    uint256 private lock_base_tax=100;//+1% everday
+    mapping(uint256=>uint256) public Lock_TransactionOrder_Time;//Timestamp of order access lock status
 
     mapping(address=>mapping(uint256=>uint256)) public UserTransactionOrders;//
     mapping(address=>uint256) public TransactionOrdersLen;
@@ -58,7 +61,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
     mapping(uint=>address) private WhiteList;
     uint256 public WhiteListIndex=0;
     event SetWhiteListEvent(address[] users);
-    event TransactionOrderBuildEvent(uint256 _identifier,address _seller,string _sellObject,uint256 _stackAmount,address _allowbuyer,uint256 _transactionOrderBiuldTime);
+    event TransactionOrderBuildEvent(uint256 _identifier,address _seller,string _sellObject,uint256 _stackAmount,address _allowbuyer,uint256 _exemptedovertimelosses);
     struct TransactionOrder {//User's order data structure
         uint256 identifier;//Order code
         string sellObject;//The items sold can be described arbitrarily. If it is a secret transaction, anyone will write irrelevant information
@@ -71,7 +74,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         bool buyLock;//Buyer lock The buyer is locked. You can cancel the order before it becomes true. However, the cancelling party will deduct a certain tax and return it to the pledge, and the other party will return the original amount to the pledge.
         bool receiveUSD;//After the seller receives the payment cash, change the value to true
         bool receiveObject;//After the buyer receives the item, change the value to true
-        uint256 transactionOrderBiuldTime;//Order creation time
+        uint256 exemptedovertimelosses;//The number of secends an order can be exempted from overtime losses
 
     }
     constructor(address _eusdtAddress) {
@@ -101,7 +104,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         oder.stackAmount=_stackAmount;
         oder.seller=_msgSender();
         oder.allowbuyer=_allowbuyer;
-        oder.transactionOrderBiuldTime=block.timestamp;
+        oder.exemptedovertimelosses=3600;// default 1 hour
         
         uint256 userindex=TransactionOrdersLen[_msgSender()];
         UserTransactionOrders[_msgSender()][userindex]=oder.identifier;
@@ -110,7 +113,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         allTransactionOrderIndex=allTransactionOrderIndex.add(1);
         TransactionOrdersLen[_msgSender()]=userindex.add(1);
 
-        emit TransactionOrderBuildEvent(oder.identifier,oder.seller,oder.sellObject,oder.stackAmount,oder.allowbuyer,oder.transactionOrderBiuldTime);
+        emit TransactionOrderBuildEvent(oder.identifier,oder.seller,oder.sellObject,oder.stackAmount,oder.allowbuyer,oder.exemptedovertimelosses);
         return true;
     }
     //Set the address of the specified buyer and trader, which can be set directly in sell, or set the value to address (0) in sell to ensure that everyone can buy, and then call this function to set
@@ -150,7 +153,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         return true;
     }
     //Seller lock , confirm transaction
-    function SellLock(uint256 _identifier) public lock returns  (bool) {
+    function SellLock(uint256 _identifier,uint256 _exemptedovertimelosses) public lock returns  (bool) {
         require(Address.isContract(_msgSender())==false,"not hunman");
         //获得订单
          require(AllTransactionOrders[_identifier].stackAmount>0,"cancel oder");//cancel Oder
@@ -160,6 +163,7 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
       
         //sell lock
         AllTransactionOrders[_identifier].sellLock=true;
+        AllTransactionOrders[_identifier].exemptedovertimelosses=_exemptedovertimelosses;
         return true;
     }
     //Buyer lock, confirm transaction
@@ -172,6 +176,8 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         require( AllTransactionOrders[_identifier].buyer==_msgSender(),"not seller");//得是买家
         //sell lock
         AllTransactionOrders[_identifier].buyLock=true;
+        //Lock time
+        Lock_TransactionOrder_Time[_identifier]=block.timestamp;
         return true;
     }
     //Seller confirms receipt of cash
@@ -199,8 +205,20 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         //CompleteTransaction
         uint256 sellSA=AllTransactionOrders[_identifier].stackAmount;
         uint256 buySA=AllTransactionOrders[_identifier].buyerstackAmount;
-        uint256 tx_seller=sellSA.div(10000).mul(taxRate);//min  0.01%
-        uint256 tx_buyer=buySA.div(10000).mul(taxRate);
+        //exemptedovertimelosses
+        uint256 timeExempted=AllTransactionOrders[_identifier].exemptedovertimelosses;
+        uint256 timeLock=Lock_TransactionOrder_Time[_identifier];
+         uint256 realTaxRate=taxRate;
+         uint256 DeTime=block.timestamp-(timeLock+timeExempted);
+        if(DeTime>0){
+            realTaxRate=realTaxRate.add(DeTime.div(86400).mul(100));//Lock timeout penalty tax rate, increased by 1% per day
+        }
+        //realTaxRate more than 100%
+        if(realTaxRate>10000){
+            realTaxRate=10000;//set realTaxRate 100%
+        }
+        uint256 tx_seller=sellSA.div(10000).mul(realTaxRate);//min  0.01%
+        uint256 tx_buyer=buySA.div(10000).mul(realTaxRate);
 
         allTax=allTax.add(tx_seller.add(tx_buyer));//all tax
 
@@ -252,8 +270,22 @@ contract ERCContract is Context,Ownable,ReentrancyGuard {
         AllTransactionOrders[_identifier].buyerstackAmount=0;
         return true;
     }
-
-
+    //Get the real tax rate, including the lock timeout penalty tax rate 
+    function getRealTax(uint256 _identifier) public view returns  (uint256) {
+        //exemptedovertimelosses
+        uint256 timeExempted=AllTransactionOrders[_identifier].exemptedovertimelosses;
+        uint256 timeLock=Lock_TransactionOrder_Time[_identifier];
+        uint256 realTaxRate=taxRate;
+        uint256 DeTime=block.timestamp-(timeLock+timeExempted);
+        if(DeTime>0){
+            realTaxRate=realTaxRate.add(DeTime.div(86400).mul(100));//Lock timeout penalty tax rate, increased by 1% per day
+        }
+        //realTaxRate more than 100%
+        if(realTaxRate>10000){
+            realTaxRate=10000;//set realTaxRate 100%
+        }
+        return realTaxRate;
+    }
     //Administrator withdraws transaction tax income
     function withdrawTax(address _to) public onlyOwner lock returns (bool) {
         //sell lock
